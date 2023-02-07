@@ -5,9 +5,10 @@ const initialState = {
     name: '',
     email: '',
     cpf: '',
+    cep: '',
+    address: '',
     city: '',
     uf: '',
-    address: '',
   },
   professional: {
     resume: '',
