@@ -1,4 +1,5 @@
-import { PERSONAL_FORM_SUBMIT, PROFESSIONAL_FORM_SUBMIT } from '../actions/actionTypes';
+import { PERSONAL_FORM_SUBMIT, PROFESSIONAL_FORM_SUBMIT,
+  INSERT_DOG } from '../actions/actionTypes';
 
 const initialState = {
   personal: {
@@ -15,6 +16,9 @@ const initialState = {
     role: '',
     description: '',
   },
+  dog: {
+    url: '',
+  },
 };
 
 const profileReducer = (state = initialState, action) => {
@@ -24,6 +28,10 @@ const profileReducer = (state = initialState, action) => {
 
   case PROFESSIONAL_FORM_SUBMIT:
     return { ...state, professional: { ...action.payload } };
+
+  case INSERT_DOG:
+    console.log(action);
+    return { ...state, dog: { url: action.payload } };
 
   default:
     return state;
