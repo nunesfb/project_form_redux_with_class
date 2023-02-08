@@ -3,18 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import Select from '../components/Select';
 import { submitPersonalForm } from '../redux/actions/profile';
-
-const UF_LIST = [
-  'Rio de Janeiro',
-  'Minas Gerais',
-  'Amapá',
-  'Amazonas',
-  'São Paulo',
-  'Ceará',
-  'Distrito Federal',
-];
+import { getAddress } from '../services/apiService';
 
 class PersonalForm extends Component {
   constructor() {
@@ -24,6 +14,7 @@ class PersonalForm extends Component {
       name: '',
       email: '',
       cpf: '',
+      cep: '',
       address: '',
       city: '',
       uf: '',
@@ -33,9 +24,21 @@ class PersonalForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange({ target }) {
+  async handleChange({ target }) {
     const { name, value } = target;
-    this.setState({ [name]: value });
+    const CEP_LENGHT = 8;
+    if (name === 'cep' && value.length === CEP_LENGHT) {
+      const address = await getAddress(value);
+      this.setState({
+        address: `${address.street} - ${address.neighborhood}`,
+        cep: value,
+        city: address.city,
+        uf: address.state,
+      });
+      console.log(address);
+    } else {
+      this.setState({ [name]: value });
+    }
   }
 
   handleSubmit(e) {
@@ -46,7 +49,7 @@ class PersonalForm extends Component {
   }
 
   render() {
-    const { name, email, cpf, address, city, uf } = this.state;
+    const { name, email, cpf, cep, address, city, uf } = this.state;
 
     return (
       <form
@@ -79,6 +82,14 @@ class PersonalForm extends Component {
           required
         />
         <Input
+          label="Cep: "
+          type="text"
+          onChange={ this.handleChange }
+          value={ cep }
+          name="cep"
+          required
+        />
+        <Input
           label="Endereço: "
           type="text"
           onChange={ this.handleChange }
@@ -93,15 +104,12 @@ class PersonalForm extends Component {
           name="city"
           value={ city }
         />
-        <Select
-          defaultOption="Selecione"
-          defaultValue="Selecione"
+        <Input
+          label="UF: "
+          type="text"
           onChange={ this.handleChange }
-          value={ uf }
-          label="Estado: "
-          id="uf"
           name="uf"
-          options={ UF_LIST }
+          value={ uf }
         />
         <Button
           type="submit"

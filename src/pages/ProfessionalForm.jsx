@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Input from '../components/Input';
 import TextArea from '../components/TextArea';
 import Button from '../components/Button';
-import { submitProfessionalForm } from '../redux/actions/profile';
+import { fetchMovies } from '../redux/actions/profile';
 
 class ProfessionalForm extends Component {
   constructor() {
@@ -26,7 +26,7 @@ class ProfessionalForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { dispatch, history } = this.props;
-    dispatch(submitProfessionalForm({ ...this.state }));
+    dispatch(fetchMovies({ ...this.state }));
     history.push('/form-display');
   }
 

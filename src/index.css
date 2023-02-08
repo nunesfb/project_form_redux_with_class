@@ -5,3 +5,143 @@
   display: flex;
   align-items: center;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  padding: 20px;
+  background-color: #0d80bf;
+}
+
+header a {
+  padding: 10px 15px;
+  color: #FFF;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  margin: 15px;
+}
+
+input {
+  padding: 5px;
+  border-radius: 5px;
+  background-color: transparent;
+  box-shadow: none;
+  margin: 10px 0 20px 0;
+}
+
+.container {
+  padding: 75px 15px;
+  background-color: #FEFEFE;
+  min-height: 100vh;
+  transition: .3s;
+}
+
+.container.dark {
+  background-color: #333333;
+  color: #FFF;
+  transition: .3s;
+}
+
+.dark-toggle {
+  position: fixed;
+  z-index: 1;
+  top: 15px;
+  right: 20px;
+  padding: 5px 10px;
+  border: 1px solid white;
+  color: white;
+  background-color: transparent;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.dark-toggle:hover {
+  background-color: white;
+  color: black;
+  transition: .2s;
+}
+
+table {
+  width: 500px;
+  margin: 10px auto;
+  padding: 0;
+  margin: 0;
+}
+
+table thead td {
+  background-color: #0d80bf;
+  color: #FFF;
+  padding: 10px;
+}
+
+table tbody td {
+  line-height: 1.5;
+}
+
+table tbody tr {
+  background-color: #FFF;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #EEE;
+}
+
+.cards {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.card-state {
+  flex-basis: 300px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 10px;
+  background-color: #0d80bf;
+  transition: .2s;
+}
+
+.card-state a {
+  color: #FFF;
+}
+
+.card-state:hover {
+  cursor: pointer;
+  margin: 5px 10px 15px 10px;
+  transition: .2s;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container.dark table tbody tr {
+  background-color: #333;
+}
+
+.container.dark table tbody tr:nth-child(even) {
+  background-color: #444;
+}

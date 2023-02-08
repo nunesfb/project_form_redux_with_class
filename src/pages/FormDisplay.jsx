@@ -15,7 +15,9 @@ class FormDisplay extends Component {
       role,
       description,
       uf,
+      url,
     } = this.props;
+    console.log(url);
     return (
       <section className="box column is-half is-offset-one-quarter">
         <h1 className="title">Dados Enviados</h1>
@@ -28,6 +30,7 @@ class FormDisplay extends Component {
         <div>{`Currículo: ${resume}`}</div>
         <div>{`Cargo: ${role}`}</div>
         <div>{`Descrição do Cargo: ${description}`}</div>
+        <img src={ url } alt="Imagem de um Dog" />
       </section>
     );
   }
@@ -42,11 +45,13 @@ FormDisplay.propTypes = {
   description: PropTypes.string.isRequired,
   role: PropTypes.string.isRequired,
   resume: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   ...state.profile.personal,
   ...state.profile.professional,
+  ...state.profile.dog,
 });
 
 export default connect(mapStateToProps)(FormDisplay);
