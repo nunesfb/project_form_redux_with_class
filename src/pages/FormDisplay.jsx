@@ -30,7 +30,7 @@ class FormDisplay extends Component {
         <div>{`Currículo: ${resume}`}</div>
         <div>{`Cargo: ${role}`}</div>
         <div>{`Descrição do Cargo: ${description}`}</div>
-        <img src={ url } alt="Imagem de um Dog" />
+        <img src={ url } alt={ url } />
       </section>
     );
   }

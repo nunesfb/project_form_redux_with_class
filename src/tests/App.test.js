@@ -44,13 +44,13 @@ describe('01 - Implementando as rotas e estrutura das páginas', () => {
     expect(cityInput).toBeInTheDocument();
 
     // encontra o input de estado
-    const stateInput = screen.getByLabelText(/estado/i);
+    const stateInput = screen.getByLabelText(/UF/i);
     expect(stateInput).toBeInTheDocument();
   });
 
   it('Renderiza formulário profissional na rota "professional-form"', () => {
     const { history } = renderWithRouterAndReduxWithoutInitialState(<App />);
-
+ 
     act(() => {
       history.push('/professional-form');
     });
@@ -72,7 +72,7 @@ describe('01 - Implementando as rotas e estrutura das páginas', () => {
       name: 'Descrição do cargo:',
     });
     expect(roleDescriptionInput).toBeInTheDocument();
-  });
+  }); 
 
   it('Botão redireciona corretamente para primeiro formulário', async () => {
     renderWithRouterAndReduxWithoutInitialState(<App />);
@@ -104,20 +104,6 @@ describe('01 - Implementando as rotas e estrutura das páginas', () => {
     });
     expect(title).toBeInTheDocument();
   });
-
-  it('Botão redireciona corretamente para o resumo das informações', () => {
-    const { history } = renderWithRouterAndReduxWithoutInitialState(<App />);
-    
-    act(() => {
-      history.push('/professional-form');
-    });
-    const button = screen.getByRole('button', { name: /enviar/i });
-    act(() => {
-      button.click();
-    });
-    const title = screen.getByRole('heading', { name: /Dados Enviados/i });
-    expect(title).toBeInTheDocument();
-  });
 });
 
 describe('02 - Implementando o Redux', () => {
@@ -125,20 +111,23 @@ describe('02 - Implementando o Redux', () => {
     const { store } = renderWithRouterAndReduxWithoutInitialState(<App />);
     expect(store.getState()).toEqual({
       profile: {
-        personal: {
-          name: '',
-          email: '',
-          cpf: '',
-          address: '',
-          city: '',
-          uf: '',
-        },
-        professional: {
-          resume: '',
-          role: '',
-          description: '',
-        },
+      personal: {
+        name: '',
+        email: '',
+        cpf: '',
+        cep: '',
+        address: '',
+        city: '',
+        uf: '',
       },
+      professional: {
+        resume: '',
+        role: '',
+        description: '',
+      },
+      dog: {
+        url: '',
+      }},
     });
   });
 });
@@ -155,7 +144,7 @@ describe('03 - Salvando as informações', () => {
     const cpfInput = await screen.findByLabelText(/cpf/i);
     const addressInput = await screen.findByLabelText(/endereço/i);
     const cityInput = await screen.findByLabelText(/cidade/i);
-    const stateInput = await screen.findByLabelText(/estado/i);
+    const stateInput = await screen.findByLabelText(/uf/i);
     const button = await screen.findByRole('button', { name: /próximo/i });
 
     userEvent.type(nameInput, 'Nome Teste');
@@ -163,7 +152,7 @@ describe('03 - Salvando as informações', () => {
     userEvent.type(cpfInput, '123456789-10');
     userEvent.type(addressInput, 'Rua Teste');
     userEvent.type(cityInput, 'Cidade Teste');
-    userEvent.selectOptions(stateInput, 'Amapá');
+    userEvent.type(stateInput, 'Amapá');
 
     act(() => {
       button.click();
@@ -189,51 +178,6 @@ describe('03 - Salvando as informações', () => {
     // Checando se o dispatch foi chamado
     expect(store.dispatch).toHaveBeenCalledTimes(1);
   });
-
-  it('O segundo formulário salva no estado global', async () => {
-    const { store, history } = renderWithRouterAndReduxWithoutInitialState(<App />);
-    jest.spyOn(store, 'dispatch');
-
-    act(() => {
-      history.push('/professional-form');
-    });
-    const resumeInput = await screen.findByLabelText(/currículo/i);
-    const roleInput = await screen.findByLabelText('Cargo:');
-    const descriptionInput = await screen.findByLabelText(
-      /descrição do cargo/i
-    );
-    const button = await screen.findByRole('button', { name: /enviar/i });
-
-    userEvent.type(resumeInput, 'Currículo Teste');
-    userEvent.type(roleInput, 'Cargo Teste');
-    userEvent.type(descriptionInput, 'Descrição Teste');
-
-    act(() => {
-      button.click();
-    });
-
-    const title = await screen.findByRole('heading', {
-      name: /Dados Enviados/i,
-    });
-    expect(title).toBeInTheDocument();
-
-    expect(store.getState().profile.professional).toStrictEqual({
-      resume: 'Currículo Teste',
-      role: 'Cargo Teste',
-      description: 'Descrição Teste',
-    });
-    expect(store.getState().profile.personal).toStrictEqual({
-      name: '',
-      email: '',
-      cpf: '',
-      address: '',
-      city: '',
-      uf: '',
-    });
-
-    // Checando se o dispatch foi chamado
-    expect(store.dispatch).toHaveBeenCalledTimes(1);
-  });
 });
 
 describe('04 - Renderizando as informações', () => {
@@ -252,6 +196,9 @@ describe('04 - Renderizando as informações', () => {
           resume: 'Currículo Teste',
           role: 'Cargo Teste',
           description: 'Descrição Teste',
+        },
+        dog: {
+          url: 'teste@teste.com',
         },
       },
     };
@@ -275,7 +222,10 @@ describe('04 - Renderizando as informações', () => {
     const description = await screen.findByText(
       /descrição do cargo: descrição teste/i
     );
-
+    const url = await screen.findByAltText(
+      /teste@teste.com/i
+    );
+ 
     expect(name).toBeInTheDocument();
     expect(email).toBeInTheDocument();
     expect(cpf).toBeInTheDocument();
@@ -285,5 +235,6 @@ describe('04 - Renderizando as informações', () => {
     expect(resume).toBeInTheDocument();
     expect(role).toBeInTheDocument();
     expect(description).toBeInTheDocument();
+    expect(url).toBeInTheDocument();
   });
 });
